@@ -5,7 +5,7 @@ const expect = chakram.expect;
 const api = require('./utils/api');
 const data = require('../server/data.json');
 
-describe.only('Comments', () => {
+describe('Comments', () => {
   describe('Create', () => {
     let addedId;
 

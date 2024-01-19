@@ -4,7 +4,7 @@ const chakram = require('chakram');
 const expect = chakram.expect;
 const api = require('./utils/api');
 
-describe.only('Albums API Tests', () => {
+describe('Albums API Tests', () => {
   describe('Create', () => {
     it('should add a new album 1', () => {
         const newAlbum = {
@@ -13,8 +13,10 @@ describe.only('Albums API Tests', () => {
             title: 'New Album 1'
         };
 
-        const response = chakram.post(api.url('albums'), newAlbum);
-        return expect(response).to.have.status(201);
+        chakram.post(api.url('albums'), newAlbum)
+            .then(function (response) {
+                return expect(response).to.have.status(201);
+            });
     });
 
     it('should add a new album 2', () => {
@@ -24,8 +26,10 @@ describe.only('Albums API Tests', () => {
             title: 'New Album 2'
         };
 
-        const response = chakram.post(api.url('albums'), newAlbum);
-        return expect(response).to.have.status(500); // Adjust the expected status code if needed
+        chakram.post(api.url('albums'), newAlbum)
+            .then( function (response) {
+                return expect(response).to.have.status(500); // Adjust the expected status code if needed
+            });
     });
 
     it('should not add a new album with existing ID', () => {
@@ -35,27 +39,35 @@ describe.only('Albums API Tests', () => {
             title: 'Existing Album'
         };
 
-        const response = chakram.post(api.url('albums'), existingAlbum);
-        return expect(response).to.have.status(500); // Adjust the expected status code if needed
+        chakram.post(api.url('albums'), existingAlbum)
+            .then(function (response) {
+                return expect(response).to.have.status(500); // Adjust the expected status code if needed
+            });
     });
 });
 
     describe('Read', () => {
         it('should have albums', () => {
-            const response = chakram.get(api.url('albums'));
-            return expect(response).to.have.status(200);
+            chakram.get(api.url('albums'))
+                .then(function (response) {
+                    return expect(response).to.have.status(200);
+                });
         });
 
-        it('should return an album by ID', () => {
+        it('should return an album by ID',  () => {
             const albumId = 1;
-            const response = chakram.get(api.url(`albums/${albumId}`));
-            return expect(response).to.have.status(200);
+            chakram.get(api.url(`albums/${albumId}`))
+                .then( function (response) {
+                    return expect(response).to.have.status(200);
+                });
         });
 
         it('should not return album for invalid ID', () => {
             const invalidAlbumId = 999;
-            const response = chakram.get(api.url(`albums/${invalidAlbumId}`));
-            return expect(response).to.have.status(404);
+            chakram.get(api.url(`albums/${invalidAlbumId}`))
+                .then(function (response) {
+                    return expect(response).to.have.status(404);
+                });
         });
     });
 
@@ -78,21 +90,25 @@ describe.only('Albums API Tests', () => {
         ];
 
         albumsToUpdateData.forEach(({ albumId, updatedAlbum }, index) => {
-            it(`should update existing album ${index + 1} with given data`, () => {
-                const response = chakram.put(api.url(`albums/${albumId}`), updatedAlbum);
-                return expect(response).to.have.status(200);
+            it(`should update existing album ${index + 1} with given data`,  () => {
+                chakram.put(api.url(`albums/${albumId}`), updatedAlbum)
+                    .then(function (response) {
+                        return expect(response).to.have.status(200);
+                    });
             });
         });
 
-        it('should throw error if the album does not exist', () => {
+        it('should throw error if the album does not exist',  () => {
             const nonExistingAlbumId = 999;
             const updatedAlbum = {
                 userId: 1,
                 title: 'Updated Album'
             };
 
-            const response = chakram.put(api.url(`albums/${nonExistingAlbumId}`), updatedAlbum);
-            return expect(response).to.have.status(404);
+            chakram.put(api.url(`albums/${nonExistingAlbumId}`), updatedAlbum)
+                .then(function (response) {
+                    return expect(response).to.have.status(404);
+                });
         });
     });
 
@@ -107,16 +123,20 @@ describe.only('Albums API Tests', () => {
         ];
 
         albumsToDeleteData.forEach(({ albumId }, index) => {
-            it(`should delete album ${index + 1} by ID`, () => {
-                const response = chakram.delete(api.url(`albums/${albumId}`));
-                return expect(response).to.have.status(200);
+            it(`should delete album ${index + 1} by ID`,  () => {
+                chakram.delete(api.url(`albums/${albumId}`))
+                    .then(function (response) {
+                        return expect(response).to.have.status(200);
+                    });
             });
         });
 
         it('should throw error if the album does not exist', () => {
             const nonExistingAlbumId = 999;
-            const response = chakram.delete(api.url(`albums/${nonExistingAlbumId}`));
-            return expect(response).to.have.status(404);
+            chakram.delete(api.url(`albums/${nonExistingAlbumId}`))
+                .then(function (response) {
+                    return expect(response).to.have.status(404);
+                });
         });
     });
 });

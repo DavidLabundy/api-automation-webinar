@@ -29,6 +29,7 @@
     "yargs": "^15.0.1"
   },
   "devDependencies": {
+    "mongodb": "^6.3.0",
     "sinon": "^17.0.1"
   }
 }
